@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.bookmanagement.DashBoardController">
+   <children>
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <BorderPane prefHeight="600.0" prefWidth="1100.0" styleClass="top-form" stylesheets="@DasbordDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <AnchorPane prefHeight="45.0" prefWidth="200.0" styleClass="semi-top-form" stylesheets="@DasbordDesign.css" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane layoutX="178.0" layoutY="-77.0" prefHeight="35.0" prefWidth="1100.0" styleClass="top-form" stylesheets="@DasbordDesign.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="9.0" text="Book Shop Management System" />
+                              <Button fx:id="close" layoutX="1071.0" layoutY="4.0" mnemonicParsing="false" onAction="#close" prefHeight="26.0" prefWidth="30.0" styleClass="close" stylesheets="@DasbordDesign.css" text="X">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="minimize" layoutX="1040.0" layoutY="4.0" mnemonicParsing="false" onAction="#minimize" prefHeight="26.0" prefWidth="30.0" styleClass="minimize" stylesheets="@DasbordDesign.css" text="-">
+                                 <font>
+                                    <Font name="Arial Black" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <left>
+                  <AnchorPane prefHeight="554.0" prefWidth="200.0" styleClass="nav_form" stylesheets="@DasbordDesign.css" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label layoutX="55.0" layoutY="99.0" text="Welcome Back," textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="username" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="126.0" prefHeight="23.0" prefWidth="127.0" text="Admin Name" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Line endX="100.0" layoutX="100.0" layoutY="169.0" startX="-100.0" />
+                        <Button fx:id="dashboard_btn" layoutX="10.0" layoutY="187.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="180.0" styleClass="nav_btn" stylesheets="@DasbordDesign.css" text="Dashboard">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="AvailableBooks_btn" layoutX="11.0" layoutY="227.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="180.0" styleClass="nav_btn" stylesheets="@DasbordDesign.css" text="Available Books">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="purchase_btn" layoutX="10.0" layoutY="267.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="180.0" styleClass="nav_btn" stylesheets="@DasbordDesign.css" text="Purchase">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="logout" layoutX="8.0" layoutY="514.0" mnemonicParsing="false" onAction="#logout" stylesheets="@DasbordDesign.css" text="SIGN OUT" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="sign_out" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </left>
+               <center>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane fx:id="dashboard_form" layoutX="12.0" layoutY="12.0" prefHeight="530.0" prefWidth="880.0" stylesheets="@DasbordDesign.css">
+                           <styleClass>
+                              <String fx:value="white_board" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <children>
+                              <AnchorPane prefHeight="160.0" prefWidth="880.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white_board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="14.0" layoutY="7.0" prefHeight="146.0" prefWidth="240.0" stylesheets="@DasbordDesign.css">
+                                       <styleClass>
+                                          <String fx:value="nav_form" />
+                                          <String fx:value="card" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="106.0" text="Available Books" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_AB" alignment="CENTER" contentDisplay="RIGHT" layoutX="50.0" layoutY="44.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="139.0" text="0" textFill="WHITE">
+                                             <font>
+                                                <Font size="40.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="320.0" layoutY="7.0" prefHeight="146.0" prefWidth="240.0" stylesheets="@DasbordDesign.css">
+                                       <styleClass>
+                                          <String fx:value="nav_form" />
+                                          <String fx:value="card" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="75.0" layoutY="103.0" text="Total Income" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_TI" alignment="CENTER" contentDisplay="RIGHT" layoutX="2.0" layoutY="44.0" prefHeight="58.0" prefWidth="236.0" text="\$0.0" textFill="WHITE">
+                                             <font>
+                                                <Font size="40.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="626.0" layoutY="7.0" prefHeight="146.0" prefWidth="240.0" stylesheets="@DasbordDesign.css">
+                                       <styleClass>
+                                          <String fx:value="nav_form" />
+                                          <String fx:value="card" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="64.0" layoutY="108.0" text="Total Customers" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_TC" alignment="CENTER" contentDisplay="RIGHT" layoutX="50.0" layoutY="44.0" prefHeight="30.0" prefWidth="139.0" text="0" textFill="WHITE">
+                                             <font>
+                                                <Font size="40.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="14.0" layoutY="177.0" prefHeight="338.0" prefWidth="480.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white_board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AreaChart fx:id="dashboard_incomechart" layoutX="-46.0" layoutY="-62.0" prefHeight="338.4" prefWidth="480.0" title="Income Chart Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <xAxis>
+                                        <CategoryAxis />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </AreaChart>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="515.0" layoutY="177.0" prefHeight="338.0" prefWidth="350.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white_board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <BarChart fx:id="dashboard_customerchart" layoutX="-150.0" layoutY="-88.0" prefHeight="338.4" prefWidth="350.4" title="Customers Chart Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="AvailableBooks_form" layoutX="14.0" layoutY="14.0" prefHeight="554.4" prefWidth="903.2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="14.0" layoutY="12.0" prefHeight="530.0" prefWidth="301.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white_board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="85.0" layoutY="14.0" prefHeight="150.0" prefWidth="130.0" stylesheets="@DasbordDesign.css">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="white_board" />
+                                       </styleClass>
+                                       <children>
+                                          <ImageView fx:id="AvailableBooks_imageview" fitHeight="150.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Button fx:id="AvailableBooks_importbtn" layoutY="123.0" mnemonicParsing="false" onAction="#AvailableBooksInsertImage" prefHeight="26.0" prefWidth="130.0" styleClass="add_btn" stylesheets="@DasbordDesign.css" text="Import" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Label layoutX="48.0" layoutY="192.0" text="Book ID :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="AvailableBooks_bookid" layoutX="111.0" layoutY="189.0" prefHeight="26.0" prefWidth="166.0" styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                    <Label alignment="CENTER" layoutX="34.0" layoutY="233.0" text="Book Title :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="AvailableBooks_booktitle" layoutX="110.0" layoutY="230.0" prefHeight="26.0" prefWidth="166.0" styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                    <Label alignment="CENTER" layoutX="52.0" layoutY="273.0" text="Author :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="AvailableBooks_author" layoutX="110.0" layoutY="270.0" prefHeight="26.0" prefWidth="166.0" styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                    <Label alignment="CENTER" layoutX="58.0" layoutY="314.0" text="Genre :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="AvailableBooks_genre" layoutX="110.0" layoutY="311.0" prefHeight="26.0" prefWidth="166.0" styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                    <Label alignment="CENTER" layoutX="11.0" layoutY="353.0" text="Pulished Date :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="AvailableBooks_date" layoutX="110.0" layoutY="351.0" prefHeight="16.0" prefWidth="166.0" />
+                                    <Label alignment="CENTER" layoutX="65.0" layoutY="394.0" text="Price :">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="AvailableBooks_price" layoutX="110.0" layoutY="391.0" prefHeight="26.0" prefWidth="166.0" promptText="\$0.0" styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                    <Button fx:id="AvailableBooks_addbtn" layoutX="35.0" layoutY="438.0" mnemonicParsing="false" onAction="#availableBooksAdd" prefHeight="30.0" prefWidth="100.0" styleClass="add_btn" stylesheets="@DasbordDesign.css" text="Add" />
+                                    <Button fx:id="AvailableBooks_updbtn" layoutX="165.0" layoutY="438.0" mnemonicParsing="false" onAction="#availableBooksUpdate" prefHeight="30.0" prefWidth="100.0" styleClass="upd_btn" stylesheets="@DasbordDesign.css" text="Update" />
+                                    <Button fx:id="AvailableBooks_clearbtn" layoutX="36.0" layoutY="478.0" mnemonicParsing="false" onAction="#availableBooksClear" prefHeight="30.0" prefWidth="100.0" styleClass="clear_btn" stylesheets="@DasbordDesign.css" text="Clear" />
+                                    <Button fx:id="AvailableBooks_deletebtn" layoutX="166.0" layoutY="478.0" mnemonicParsing="false" onAction="#availableBooksDelete" prefHeight="30.0" prefWidth="100.0" styleClass="delete_btn" stylesheets="@DasbordDesign.css" text="Delete" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="333.0" layoutY="12.0" prefHeight="530.0" prefWidth="555.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white_board" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <TextField fx:id="AvailableBooks_search" layoutX="14.0" layoutY="14.0" onAction="#searchBook" prefHeight="26.0" prefWidth="265.0" promptText="Search" styleClass="search" stylesheets="@DasbordDesign.css" />
+                                    <TableView fx:id="AvailableBooks_tableView" layoutX="14.0" layoutY="65.0" onMouseClicked="#availableBooksSelect" prefHeight="455.0" prefWidth="530.0" stylesheets="@DasbordDesign.css">
+                                      <columns>
+                                        <TableColumn fx:id="AvailableBooks_col_bookid" prefWidth="55.20001220703125" text="Book ID" />
+                                        <TableColumn fx:id="AvailableBooks_col_booktitle" prefWidth="125.60000610351562" text="Book Title" />
+                                          <TableColumn fx:id="AvailableBooks_col_author" prefWidth="92.0" text="Author" />
+                                          <TableColumn fx:id="AvailableBooks_col_genre" prefWidth="87.99993896484375" text="Genre" />
+                                          <TableColumn fx:id="AvailableBooks_col_date" prefWidth="85.5999755859375" text="Pulished Date" />
+                                          <TableColumn fx:id="AvailableBooks_col_price" minWidth="0.0" prefWidth="84.79998779296875" text="Price ($)" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="purchase_form" layoutX="88.0" layoutY="51.0" prefHeight="554.4" prefWidth="903.2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="12.0" layoutY="12.0" prefHeight="529.0" prefWidth="880.0" stylesheets="@DasbordDesign.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white_board" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane prefHeight="215.0" prefWidth="880.0" stylesheets="@DasbordDesign.css">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="white_board" />
+                                       </styleClass>
+                                       <children>
+                                          <Label layoutX="45.0" layoutY="29.0" text="Book ID : ">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="purchase_bookid" layoutX="109.0" layoutY="27.0" onAction="#purchaseBookid" prefWidth="150.0" promptText="Choose..." styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                          <Label layoutX="32.0" layoutY="70.0" text="Book Title : ">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="purchase_booktitle" layoutX="109.0" layoutY="68.0" onAction="#purchaseBookTitle" prefWidth="150.0" promptText="Choose..." styleClass="text-field" stylesheets="@DasbordDesign.css" />
+                                          <Label layoutX="40.0" layoutY="109.0" text="Quantity :">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Spinner fx:id="purchase_quantity" layoutX="110.0" layoutY="107.0" onMouseClicked="#purchaseQty" prefHeight="25.0" prefWidth="102.0" />
+                                          <Label layoutX="315.0" layoutY="146.0" text="Total :">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="purchase_total" layoutX="380.0" layoutY="146.0" prefHeight="30.0" prefWidth="160.0" text="\$0.0">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Button fx:id="purchase_addbtn" layoutX="305.0" layoutY="25.0" mnemonicParsing="false" onAction="#purchaseAdd" prefHeight="45.0" prefWidth="75.0" styleClass="add_btn" stylesheets="@DasbordDesign.css" text="Add">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font></Button>
+                                          <AnchorPane layoutX="500.0" prefHeight="215.0" prefWidth="380.0" styleClass="info" stylesheets="@DasbordDesign.css">
+                                             <children>
+                                                <Label layoutX="37.0" layoutY="16.0" text="Book ID :" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="purchase_info_bookid" layoutX="108.0" layoutY="14.0" prefHeight="30.0" prefWidth="154.0" styleClass="info-label" stylesheets="@DasbordDesign.css">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="21.0" layoutY="53.0" text="Book Title :" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="purchase_info_title" layoutX="108.0" layoutY="51.0" prefHeight="30.0" prefWidth="260.0" styleClass="info-label" stylesheets="@DasbordDesign.css">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="43.0" layoutY="90.0" text="Author :" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="purchase_info_author" layoutX="107.0" layoutY="88.0" prefHeight="30.0" prefWidth="260.0" styleClass="info-label" stylesheets="@DasbordDesign.css">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="50.0" layoutY="128.0" text="Genre :" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="purchase_info_genre" layoutX="108.0" layoutY="126.0" prefHeight="30.0" prefWidth="260.0" styleClass="info-label" stylesheets="@DasbordDesign.css">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="26.0" layoutY="166.0" text="Pub Date :" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="purchase_info_date" layoutX="108.0" layoutY="164.0" prefHeight="30.0" prefWidth="154.0" styleClass="info-label" stylesheets="@DasbordDesign.css">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <Button fx:id="purchase_paybtn" layoutX="304.0" layoutY="89.0" mnemonicParsing="false" onAction="#purchasePay" prefHeight="38.0" prefWidth="185.0" styleClass="add_btn" stylesheets="@DasbordDesign.css" text="Pay" />
+                                          <Button fx:id="purchase_dltbtn" layoutX="409.0" layoutY="25.0" mnemonicParsing="false" onAction="#purchaseBookDelete" prefHeight="45.0" prefWidth="75.0" styleClass="add_btn" stylesheets="@DasbordDesign.css" text="Delete">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Button>
+                                          <TextField fx:id="purchase_cashier" layoutX="110.0" layoutY="146.0" />
+                                          <Label layoutX="47.0" layoutY="147.0" text="Cashier :">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="purchase_cusmail" layoutX="110.0" layoutY="176.0" />
+                                          <Label contentDisplay="CENTER" layoutX="29.0" layoutY="178.0" prefHeight="22.0" prefWidth="83.0" text="Cus_Email :" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <TableView fx:id="purchase_tableView" layoutX="13.0" layoutY="232.0" prefHeight="292.0" prefWidth="854.0">
+                                      <columns>
+                                        <TableColumn fx:id="purchase_col_bookid" prefWidth="66.4000415802002" text="Book ID" />
+                                        <TableColumn fx:id="purchase_col_title" prefWidth="280.80004119873047" text="Book Title" />
+                                          <TableColumn fx:id="purchase_col_author" prefWidth="250.39999389648438" text="Author" />
+                                          <TableColumn fx:id="purchase_col_genre" prefWidth="109.5999755859375" text="Genre" />
+                                          <TableColumn fx:id="purchase_col_quantity" prefWidth="64.7999267578125" text="Quantity" />
+                                          <TableColumn fx:id="purchase_col_price" prefWidth="89.59991455078125" text="Price ($)" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

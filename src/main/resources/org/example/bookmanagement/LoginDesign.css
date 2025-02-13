@@ -1,0 +1,50 @@
+.left-form
+{
+    -fx-background-color: linear-gradient(to bottom right, #3c2c21, #93773e);
+    -fx-border-color: #000;
+    -fx-border-width: .4px 0px .4px .4px;
+}
+.rigt-form
+{
+    -fx-background-color: #fff ;
+    -fx-border-color: #000;
+    -fx-border-width: .4px 0px .4px .4px;
+}
+.close
+{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.close:hover
+{
+    -fx-background-color: #cf2d2d;
+}
+.text-field
+{
+    -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
+    -fx-background-radius: 4px;
+    -fx-font-size: 13px;
+    -fx-border-color: #d000;
+    -fx-border-width: .4px;
+    -fx-border-radius: 4px;
+    -fx-font-family: "Tahoma";
+}
+.text-field:focused
+{
+    -fx-background-color: #fff;
+    -fx-border-color: linear-gradient(to top right, #3c2c21, #93773e);
+    -fx-border-width: 1px;
+}
+.lgin-btn
+{
+    -fx-background-color: linear-gradient(to top right, #343d44, #439974);
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+.lgin-btn:hover
+{
+    -fx-background-color: linear-gradient(to top right, #4d8694, #439974);
+}
