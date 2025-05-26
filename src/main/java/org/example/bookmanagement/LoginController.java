@@ -22,18 +22,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-
+import java.security.MessageDigest;
 public class LoginController
 {
 
     @FXML
-    private Button close;
+    private PasswordField password1;
 
     @FXML
-    private Button forgotbtn;
-
-    @FXML
-    private Button registerbtn;
+    private Button resbtn;
 
     @FXML
     private Button loginbtn;
@@ -66,14 +63,16 @@ public class LoginController
     {
         connect = database.connectDb();
 
-        String sql = "SELECT * FROM admin WHERE username = ? and password = ?"; // admin is our table name
+        String sql = "SELECT * FROM admin WHERE username = ? and password = ?";
 
         try{
             Alert alert;
 
             prepare = connect.prepareStatement(sql);
             prepare.setString(1, username.getText());
-            prepare.setString(2, password.getText());
+            String hashedPassword = hashPassword(password.getText());
+            prepare.setString(2, hashedPassword);
+
 
             result = prepare.executeQuery();
 
@@ -127,6 +126,85 @@ public class LoginController
             }
 
         }catch(Exception e){e.printStackTrace();}
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void registerAdmin() {
+        connect = database.connectDb();
+        String checkUserSQL = "SELECT * FROM admin WHERE username = ?";
+        String insertUserSQL = "INSERT INTO admin (username, password) VALUES (?, ?)";
+
+        try {
+            String user = username.getText();
+            String pass = password.getText();
+            String confirmPass = password1.getText();
+
+
+            if (user.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
+                showAlert(AlertType.ERROR, "Lỗi", "Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+
+            if (!pass.equals(confirmPass)) {
+                showAlert(AlertType.ERROR, "Lỗi", "Mật khẩu không khớp!");
+                return;
+            }
+
+
+            prepare = connect.prepareStatement(checkUserSQL);
+            prepare.setString(1, user);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                showAlert(AlertType.ERROR, "Lỗi", "Username đã tồn tại!");
+            } else {
+
+                String hashedPassword = hashPassword(pass);
+                prepare = connect.prepareStatement(insertUserSQL);
+                prepare.setString(1, user);
+                prepare.setString(2, hashedPassword);
+                prepare.executeUpdate();
+
+                showAlert(AlertType.INFORMATION, "Thành công", "Đăng ký thành công!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    private void showAlert(AlertType type, String title, String content) {
+        alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void closeResources() {
+        try {
+            if (result != null) result.close();
+            if (prepare != null) prepare.close();
+            if (connect != null) connect.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

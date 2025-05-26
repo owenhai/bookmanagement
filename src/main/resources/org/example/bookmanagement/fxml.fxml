@@ -29,8 +29,8 @@
                      </font>
                   </Label>
                   <TextField fx:id="username" layoutX="53.0" layoutY="164.0" prefHeight="30.0" prefWidth="220.0" promptText="Username" styleClass="text-field" stylesheets="@LoginDesign.css" />
-                  <PasswordField fx:id="password" layoutX="53.0" layoutY="220.0" prefHeight="30.0" prefWidth="220.0" promptText="Password" styleClass="text-field" stylesheets="@LoginDesign.css" />
-                  <Button fx:id="loginbtn" layoutX="53.0" layoutY="275.0" mnemonicParsing="false" onAction="#loginAdmin" prefHeight="40.0" prefWidth="220.0" styleClass="lgin-btn" stylesheets="@LoginDesign.css" text="Login">
+                  <PasswordField fx:id="password" layoutX="53.0" layoutY="214.0" prefHeight="30.0" prefWidth="220.0" promptText="Password" styleClass="text-field" stylesheets="@LoginDesign.css" />
+                  <Button fx:id="loginbtn" layoutX="179.0" layoutY="332.0" mnemonicParsing="false" onAction="#loginAdmin" prefHeight="40.0" prefWidth="114.0" styleClass="lgin-btn" stylesheets="@LoginDesign.css" text="Login">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
@@ -40,6 +40,12 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
+                  <Button fx:id="resbtn" layoutX="34.0" layoutY="332.0" mnemonicParsing="false" onAction="#registerAdmin" prefHeight="40.0" prefWidth="114.0" styleClass="lgin-btn" stylesheets="@LoginDesign.css" text="Register">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <PasswordField fx:id="password1" layoutX="54.0" layoutY="263.0" prefHeight="30.0" prefWidth="220.0" promptText="Confirm Password" styleClass="text-field" stylesheets="@LoginDesign.css" />
                </children>
             </AnchorPane>
          </children>
