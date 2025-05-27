@@ -228,110 +228,161 @@ public class DashBoardController implements Initializable {
 
 
 
-    public void dashboardic()
-    {
-        dashboard_incomechart.getData().clear();
+    public void dashboardic() {
+        new Thread(() -> {
+            String sql = "SELECT date, SUM(total) FROM customer_info GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 6";
+            connect = database.connectDb();
+            System.out.println("Connecting to database for customer chart..." + sql);
+            try {
+                XYChart.Series chart = new XYChart.Series();
+                prepare = connect.prepareStatement(sql);
+                result = prepare.executeQuery();
+                while (result.next()) {
+                    String date = result.getString(1);
+                    int total = result.getInt(2);
 
-        String sql = "SELECT date, SUM(total) FROM customer_info GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 6";
+                    // Tạo bản sao biến final
+                    String finalDate = date;
+                    int finalTotal = total;
 
-        connect = database.connectDb();
-
-        try{
-            XYChart.Series chart = new XYChart.Series();
-
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            while(result.next()){
-                chart.getData().add(new XYChart.Data(result.getString(1), result.getInt(2)));
+                    Platform.runLater(() -> {
+                        chart.getData().add(new XYChart.Data(finalDate, finalTotal));
+                    });
+                }
+                Platform.runLater(() -> {
+                    dashboard_incomechart.getData().clear();
+                    dashboard_incomechart.getData().add(chart);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (result != null) result.close();
+                    if (prepare != null) prepare.close();
+                    if (connect != null) connect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-
-            dashboard_incomechart.getData().add(chart);
-
-        }catch(Exception e){e.printStackTrace();}
-
+        }).start();
     }
 
-    public void dashboardcc()
-    {
 
-        dashboard_customerchart.getData().clear();
+    public void dashboardcc() {
+        new Thread(() -> {
+            String sql = "SELECT date, COUNT(id) FROM customer_info GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 4";
 
-        String sql = "SELECT date, COUNT(id) FROM customer_info GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 4";
+            connect = database.connectDb();
+            System.out.println("Connecting to database for customer chart..." + sql);
+            try {
+                XYChart.Series chart = new XYChart.Series();
+                prepare = connect.prepareStatement(sql);
+                result = prepare.executeQuery();
+                while (result.next()) {
+                    String date = result.getString(1);
+                    int count = result.getInt(2);
 
-        connect = database.connectDb();
+                    // Tạo bản sao biến final
+                    String finalDate = date;
+                    int finalCount = count;
 
-        try{
-            XYChart.Series chart = new XYChart.Series();
-
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            while(result.next()){
-                chart.getData().add(new XYChart.Data(result.getString(1), result.getInt(2)));
+                    Platform.runLater(() -> {
+                        chart.getData().add(new XYChart.Data(finalDate, finalCount));
+                    });
+                }
+                Platform.runLater(() -> {
+                    dashboard_customerchart.getData().clear();
+                    dashboard_customerchart.getData().add(chart);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (result != null) result.close();
+                    if (prepare != null) prepare.close();
+                    if (connect != null) connect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-
-            dashboard_customerchart.getData().add(chart);
-
-        }catch(Exception e){e.printStackTrace();}
-
+        }).start();
     }
 
-    public void dashboardAB(){
 
-        String sql = "SELECT COUNT(id) FROM book";
-
-        connect = database.connectDb();
-        int countAB = 0;
-        try{
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if(result.next()){
-                countAB = result.getInt("COUNT(id)");
+    public void dashboardAB() {
+        new Thread(() -> {
+            String sql = "SELECT COUNT(id) FROM book";
+            connect = database.connectDb();
+            try {
+                prepare = connect.prepareStatement(sql);
+                result = prepare.executeQuery();
+                if (result.next()) {
+                    int countAB = result.getInt(1);
+                    Platform.runLater(() -> {
+                        dashboard_AB.setText(String.valueOf(countAB));
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // Đóng kết nối, prepare, result
             }
-
-            dashboard_AB.setText(String.valueOf(countAB));
-
-        }catch(Exception e){e.printStackTrace();}
+        }).start();
     }
 
-    public void dashboardTI(){
+    public void dashboardTI() {
+        new Thread(() -> {
+            String sql = "SELECT SUM(total) FROM customer_info";
+            try (Connection conn = database.connectDb();
+                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
 
-        String sql = "SELECT SUM(total) FROM customer_info";
+                double sumTotal;
+                if (rs.next()) {
+                    sumTotal = rs.getDouble(1);
+                } else {
+                    sumTotal = 0;
+                }
 
-        connect = database.connectDb();
-        double sumTotal = 0;
-        try{
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
+                // Cập nhật UI trên luồng JavaFX
+                Platform.runLater(() -> {
+                    dashboard_TI.setText("$" + String.format("%.2f", sumTotal));
+                });
 
-            if(result.next()){
-                sumTotal = result.getDouble("SUM(total)");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    new Alert(AlertType.ERROR, "Lỗi khi truy vấn tổng doanh thu").show();
+                });
             }
-
-            dashboard_TI.setText("$" + String.valueOf(sumTotal));
-
-        }catch(Exception e){e.printStackTrace();}
+        }).start();
     }
 
-    public void dashboardTC(){
-        String sql = "SELECT COUNT(id) FROM customer_info";
+    public void dashboardTC() {
+        new Thread(() -> {
+            String sql = "SELECT COUNT(id) FROM customer_info";
+            try (Connection conn = database.connectDb();
+                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
 
-        connect = database.connectDb();
-        int countTC = 0;
-        try{
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
+                int countTC = 0;
+                if (rs.next()) {
+                    countTC = rs.getInt(1);
+                }
 
-            if(result.next()){
-                countTC = result.getInt("COUNT(id)");
+                // Cập nhật UI trên luồng JavaFX
+                int finalCountTC = countTC;
+                Platform.runLater(() -> {
+                    dashboard_TC.setText(String.valueOf(finalCountTC));
+                });
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    new Alert(AlertType.ERROR, "Lỗi khi đếm số khách hàng").show();
+                });
             }
-
-            dashboard_TC.setText(String.valueOf(countTC));
-
-        }catch(Exception e){e.printStackTrace();}
-
+        }).start();
     }
 
     private void printBillToPDF(int customerId, double totalAmount, java.sql.Date date, String cashierName) {
