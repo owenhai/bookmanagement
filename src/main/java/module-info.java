@@ -13,4 +13,5 @@ module org.example.bookmanagement {
 
     opens org.example.bookmanagement to javafx.fxml;
     exports org.example.bookmanagement;
+
 }

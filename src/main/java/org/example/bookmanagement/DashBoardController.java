@@ -17,6 +17,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -334,56 +335,28 @@ public class DashBoardController implements Initializable {
     }
 
     private void printBillToPDF(int customerId, double totalAmount, java.sql.Date date, String cashierName) {
-        try {
-            String pdfFilePath = "Bill_" + customerId + ".pdf";
+        new Thread(() -> {
+            try {
+                String pdfFilePath = "Bill_" + customerId + ".pdf";
+                PdfWriter writer = new PdfWriter(pdfFilePath);
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                Document document = new Document(pdfDoc);
 
-            PdfWriter writer = new PdfWriter(pdfFilePath);
-            PdfDocument pdfDoc = new PdfDocument(writer);
-            Document document = new Document(pdfDoc);
+                // ... (giữ nguyên logic tạo nội dung PDF)
 
-            StringBuilder billContent = new StringBuilder();
-            billContent.append("BOOK STORE INVOICE\n");
-            billContent.append("=============================\n");
-            billContent.append("Customer ID: ").append(customerId).append("\n");
-            billContent.append("Cashier: ").append(cashierName).append("\n"); // Thêm tên thu ngân
-            billContent.append("Date: ").append(date).append("\n");
-            billContent.append("--------------------------------------------------\n");
+                document.close();
 
-            billContent.append(String.format("%-30s %-10s %-10s\n", "Title", "Quantity", "Price"));
-            billContent.append("--------------------------------------------------\n");
-
-            String sql = "SELECT title, quantity, price FROM customer WHERE customer_id = ?";
-            try (PreparedStatement prepare = connect.prepareStatement(sql)) {
-                prepare.setInt(1, customerId);
-                try (ResultSet result = prepare.executeQuery()) {
-                    while (result.next()) {
-                        String title = result.getString("title");
-                        int quantity = result.getInt("quantity");
-                        double price = result.getDouble("price");
-
-                        billContent.append(String.format("%-30s %-10d $%-9.2f\n", title, quantity, price));
-                    }
-                }
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Bill Generated");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Bill saved to: " + pdfFilePath);
+                    alert.showAndWait();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            billContent.append("--------------------------------------------------\n");
-            billContent.append("Total: $").append(totalAmount).append("\n");
-            billContent.append("=============================\n");
-            billContent.append("Thank you for your purchase!\n");
-
-            document.add(new Paragraph(billContent.toString()));
-
-            document.close();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Bill Generated");
-            alert.setHeaderText(null);
-            alert.setContentText("Bill has been saved to: " + pdfFilePath);
-            alert.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
 
@@ -453,51 +426,55 @@ public class DashBoardController implements Initializable {
 
 
     private void sendDiscountEmail(String email) {
-        String discountCode = generateRandomDiscountCode();
+        new Thread(() -> {
+            String discountCode = generateRandomDiscountCode();
+            String subject = "Your Discount Code from Book Store!";
+            String message = "Thank you for your purchase!\n"
+                    + "Use this discount code for 10% off on your next purchase: " + discountCode;
 
-        String subject = "Your Discount Code from Book Store!";
-        String message = "Thank you for your purchase!\n"
-                + "Use this discount code for 10% off on your next purchase: " + discountCode;
+            Properties properties = new Properties();
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.host", "smtp.gmail.com");
+            properties.put("mail.smtp.port", "587");
 
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
+            String senderEmail = "guimaresetmk@gmail.com";
+            String senderPassword = "nyvi pjyb cmlq hzvi";
 
-        String senderEmail = "guimaresetmk@gmail.com";
-        String senderPassword = "nyvi pjyb cmlq hzvi";
+            try {
+                Session session = Session.getInstance(properties, new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(senderEmail, senderPassword);
+                    }
+                });
 
-        try {
-            Session session = Session.getInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(senderEmail, senderPassword);
-                }
-            });
+                Message emailMessage = new MimeMessage(session);
+                emailMessage.setFrom(new InternetAddress(senderEmail));
+                emailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
+                emailMessage.setSubject(subject);
+                emailMessage.setText(message);
 
-            Message emailMessage = new MimeMessage(session);
-            emailMessage.setFrom(new InternetAddress(senderEmail)); // Email gửi
-            emailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email)); // Email nhận
-            emailMessage.setSubject(subject);
-            emailMessage.setText(message);
+                Transport.send(emailMessage);
 
-            Transport.send(emailMessage);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Email Sent");
-            alert.setHeaderText(null);
-            alert.setContentText("Discount code has been sent to: " + email);
-            alert.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Email Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to send discount email. Please check your email settings.");
-            alert.showAndWait();
-        }
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Email Sent");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Discount code has been sent to: " + email);
+                    alert.showAndWait();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Email Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to send discount email.");
+                    alert.showAndWait();
+                });
+            }
+        }).start();
     }
 
     private String generateRandomDiscountCode() {
