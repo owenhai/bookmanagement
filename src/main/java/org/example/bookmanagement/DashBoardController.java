@@ -393,7 +393,37 @@ public class DashBoardController implements Initializable {
                 PdfDocument pdfDoc = new PdfDocument(writer);
                 Document document = new Document(pdfDoc);
 
-                // ... (giữ nguyên logic tạo nội dung PDF)
+                StringBuilder billContent = new StringBuilder();
+                billContent.append("BOOK STORE INVOICE\n");
+                billContent.append("=============================\n");
+                billContent.append("Customer ID: ").append(customerId).append("\n");
+                billContent.append("Cashier: ").append(cashierName).append("\n"); // Thêm tên thu ngân
+                billContent.append("Date: ").append(date).append("\n");
+                billContent.append("--------------------------------------------------\n");
+
+                billContent.append(String.format("%-30s %-10s %-10s\n", "Title", "Quantity", "Price"));
+                billContent.append("--------------------------------------------------\n");
+
+                String sql = "SELECT title, quantity, price FROM customer WHERE customer_id = ?";
+                try (PreparedStatement prepare = connect.prepareStatement(sql)) {
+                    prepare.setInt(1, customerId);
+                    try (ResultSet result = prepare.executeQuery()) {
+                        while (result.next()) {
+                            String title = result.getString("title");
+                            int quantity = result.getInt("quantity");
+                            double price = result.getDouble("price");
+
+                            billContent.append(String.format("%-30s %-10d $%-9.2f\n", title, quantity, price));
+                        }
+                    }
+                }
+
+                billContent.append("--------------------------------------------------\n");
+                billContent.append("Total: $").append(totalAmount).append("\n");
+                billContent.append("=============================\n");
+                billContent.append("Thank you for your purchase!\n");
+
+                document.add(new Paragraph(billContent.toString()));
 
                 document.close();
 
